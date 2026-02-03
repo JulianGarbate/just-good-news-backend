@@ -8,11 +8,8 @@ dotenv.config();
 
 const app = express();
 
-// CORS - Permitir solo desde el frontend
-app.use(cors({
-  origin: "https://just-good-news.vercel.app",
-  credentials: false,
-}));
+// CORS - Permisivo para debuguear
+app.use(cors());
 
 app.use(express.json());
 
@@ -21,6 +18,12 @@ app.use("/api/news", newsRouter);
 // Health check
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+// Error handler
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error(err);
+  res.status(500).json({ error: err.message });
 });
 
 // Handler para Vercel

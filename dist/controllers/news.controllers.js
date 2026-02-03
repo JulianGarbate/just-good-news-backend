@@ -4,13 +4,16 @@ export const obtenerNoticias = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 6;
     const skip = (page - 1) * limit;
+    console.log(`🔎 GET /news - página ${page}, límite ${limit}`);
     try {
         const total = await prisma.news.count();
+        console.log(`📊 Total de noticias en BD: ${total}`);
         const noticias = await prisma.news.findMany({
             skip,
             take: limit,
             orderBy: { publishedAt: 'desc' }
         });
+        console.log(`✅ Enviando ${noticias.length} noticias`);
         const hasMore = skip + limit < total;
         res.json({
             articles: noticias,
@@ -21,6 +24,7 @@ export const obtenerNoticias = async (req, res) => {
         });
     }
     catch (error) {
+        console.error(`❌ Error en obtenerNoticias:`, error);
         res.status(500).json({ message: "Error al obtener noticias" });
     }
 };

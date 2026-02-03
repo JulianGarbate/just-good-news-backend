@@ -6,6 +6,11 @@ export function startNewsCron(schedule = "*/30 * * * *", url, sourceName) {
         console.log("⚠️ Cron ya está en ejecución");
         return;
     }
+    // Ejecutar inmediatamente al iniciar
+    console.log("🚀 Ejecutando búsqueda inicial de noticias...");
+    nuevasNoticias(url, sourceName).catch(error => {
+        console.error("❌ Error en búsqueda inicial:", error);
+    });
     cronTask = cron.schedule(schedule, async () => {
         try {
             console.log("⏰ Cron ejecutado");

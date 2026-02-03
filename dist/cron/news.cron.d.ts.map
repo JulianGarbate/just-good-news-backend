@@ -1,1 +1,1 @@
-{"version":3,"file":"news.cron.d.ts","sourceRoot":"","sources":["../../src/cron/news.cron.ts"],"names":[],"mappings":"AAKA,wBAAgB,aAAa,CAAC,QAAQ,EAAE,MAAM,YAAiB,EAAE,GAAG,EAAE,MAAM,EAAE,UAAU,EAAE,MAAM,QAgB/F;AAED,wBAAgB,YAAY,SAM3B"}
+{"version":3,"file":"news.cron.d.ts","sourceRoot":"","sources":["../../src/cron/news.cron.ts"],"names":[],"mappings":"AAKA,wBAAgB,aAAa,CAAC,QAAQ,EAAE,MAAM,YAAiB,EAAE,GAAG,EAAE,MAAM,EAAE,UAAU,EAAE,MAAM,QAsB/F;AAED,wBAAgB,YAAY,SAM3B"}

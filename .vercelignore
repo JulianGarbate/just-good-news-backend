@@ -1,0 +1,12 @@
+node_modules
+.next
+.env
+.env.local
+.git
+.gitignore
+README.md
+prisma/migrations
+.vercel
+src
+tsconfig.json
+package-lock.json

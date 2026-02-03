@@ -26,7 +26,8 @@ const POSITIVE_KEYWORDS = [
     "cultural"
 ];
 export function filterNews(news) {
-    return news.filter(item => {
+    console.log(`🔬 Filtrando ${news.length} noticias con palabras clave...`);
+    const filtered = news.filter(item => {
         const text = `${item.title} ${item.subtitle}`.toLowerCase();
         const hasNegative = NEGATIVE_KEYWORDS.some(word => text.includes(word));
         const hasPositive = POSITIVE_KEYWORDS.some(word => text.includes(word));
@@ -34,7 +35,17 @@ export function filterNews(news) {
         item.sentiment = hasNegative ? 'negative' : 'positive';
         // Default category if not set
         item.category = item.category || 'general';
-        return !hasNegative && hasPositive;
+        // Rechaza solo si tiene palabras negativas, acepta todo lo demás
+        const passes = !hasNegative;
+        if (!passes) {
+            console.log(`  ❌ Descartada (negativa): "${item.title.substring(0, 50)}..."`);
+        }
+        else {
+            console.log(`  ✅ Aceptada: "${item.title.substring(0, 50)}..." (${item.sentiment})`);
+        }
+        return passes;
     });
+    console.log(`✅ ${filtered.length}/${news.length} noticias aprobadas`);
+    return filtered;
 }
 //# sourceMappingURL=filtro.services.js.map

@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import newsRouter from './routes/news.routes.js';
 import { startNewsCron } from './cron/news.cron.js';
@@ -28,15 +29,26 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// Middleware
+app.use(cors());
 app.use(express.json());
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
+// Routes
+app.use('/news', newsRouter);
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.use('/api/news', newsRouter);
+app.get('/', (req, res) => {
+  res.json({ message: 'Just Good News API v1' });
+});
+
+// Error handler
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('❌ Error:', err);
+  res.status(500).json({ error: err.message });
+});
 
 // Solo ejecutar cron en desarrollo o si está explícitamente habilitado
 if (process.env.NODE_ENV !== 'production' || process.env.ENABLE_CRON === 'true') {

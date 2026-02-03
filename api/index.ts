@@ -1,4 +1,4 @@
-import { VercelRequest, VercelResponse } from "@vercel/node";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 import express from "express";
 import dotenv from "dotenv";
 import newsRouter from "../src/routes/news.routes.js";

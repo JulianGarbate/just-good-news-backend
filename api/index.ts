@@ -8,23 +8,12 @@ dotenv.config();
 
 const app = express();
 
-// CORS configuration
-const corsOptions: any = {
+// CORS - Permitir solo desde el frontend
+app.use(cors({
   origin: "https://just-good-news.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept"],
   credentials: false,
-};
+}));
 
-// En desarrollo, permitir localhost
-if (process.env.NODE_ENV !== 'production') {
-  corsOptions.origin = (origin: string, callback: any) => {
-    const allowed = ["https://just-good-news.vercel.app", "http://localhost:3000"];
-    callback(null, allowed.includes(origin) ? origin : false);
-  };
-}
-
-app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use("/api/news", newsRouter);

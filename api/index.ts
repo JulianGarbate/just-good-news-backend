@@ -7,11 +7,10 @@ dotenv.config();
 
 const app = express();
 
-// CORS - Solo permitir desde el frontend
-const allowedOrigins = [
-  "https://just-good-news.vercel.app",
-  "http://localhost:3000", // Para desarrollo local
-];
+// CORS - Solo permitir desde el frontend en producción
+const allowedOrigins = process.env.NODE_ENV === 'production' 
+  ? ["https://just-good-news.vercel.app"]
+  : ["https://just-good-news.vercel.app", "http://localhost:3000"];
 
 app.use(express.json());
 
@@ -20,6 +19,9 @@ app.use((req, res, next) => {
   
   if (origin && allowedOrigins.includes(origin)) {
     res.header("Access-Control-Allow-Origin", origin);
+  } else if (origin) {
+    // Origen no permitido
+    return res.status(403).json({ error: "CORS policy: Origin not allowed" });
   }
   
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");

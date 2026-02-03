@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import express from "express";
+import cors from "cors";
 import dotenv from "dotenv";
 import newsRouter from "../src/routes/news.routes.js";
 
@@ -7,27 +8,21 @@ dotenv.config();
 
 const app = express();
 
-// CORS
-const allowedOrigin = "https://just-good-news.vercel.app";
+// CORS configuration
+const corsOptions = {
+  origin: "https://just-good-news.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept"],
+  credentials: false,
+};
 
+// En desarrollo, permitir localhost
+if (process.env.NODE_ENV !== 'production') {
+  corsOptions.origin = ["https://just-good-news.vercel.app", "http://localhost:3000"];
+}
+
+app.use(cors(corsOptions));
 app.use(express.json());
-
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  
-  // Permitir solo el frontend en producción
-  if (origin === allowedOrigin || process.env.NODE_ENV !== 'production') {
-    res.header("Access-Control-Allow-Origin", origin || allowedOrigin);
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  }
-  
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
-  
-  next();
-});
 
 app.use("/api/news", newsRouter);
 

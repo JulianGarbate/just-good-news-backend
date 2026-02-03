@@ -7,11 +7,21 @@ dotenv.config();
 
 const app = express();
 
+// CORS - Solo permitir desde el frontend
+const allowedOrigins = [
+  "https://just-good-news.vercel.app",
+  "http://localhost:3000", // Para desarrollo local
+];
+
 app.use(express.json());
 
-// CORS - Permitir requests desde cualquier origen
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
+  const origin = req.headers.origin;
+  
+  if (origin && allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+  }
+  
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   res.header(
     "Access-Control-Allow-Headers",

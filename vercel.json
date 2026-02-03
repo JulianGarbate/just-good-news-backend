@@ -1,5 +1,10 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build && npm install",
   "outputDirectory": "dist",
-    "framework": "express"
+  "env": {
+    "DATABASE_URL": "@database_url",
+    "DIRECT_URL": "@direct_url",
+    "NODE_ENV": "production"
+  }
 }
+

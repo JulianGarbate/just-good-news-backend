@@ -38,10 +38,13 @@ app.use((req, res, next) => {
 
 app.use('/api/news', newsRouter);
 
-const url = contenido[getRandomInt(contenido.length)]?.url as string
-const source = contenido[getRandomInt(contenido.length)]?.source as string;
-console.log(`📰 Fuente seleccionada para cron: ${source} - ${url}`);
-startNewsCron("*/30 * * * *", url, source);
+// Solo ejecutar cron en desarrollo o si está explícitamente habilitado
+if (process.env.NODE_ENV !== 'production' || process.env.ENABLE_CRON === 'true') {
+  const url = contenido[getRandomInt(contenido.length)]?.url as string
+  const source = contenido[getRandomInt(contenido.length)]?.source as string;
+  console.log(`📰 Fuente seleccionada para cron: ${source} - ${url}`);
+  startNewsCron("*/30 * * * *", url, source);
+}
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
